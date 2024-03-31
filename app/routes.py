@@ -2,6 +2,7 @@ from app import app
 from all_tasks.tasks import tasks_list
 from flask import request
 
+
 @app.route('/')
 def index():
     return f'this is the index page'
@@ -36,5 +37,25 @@ def create_task():
             missing_fields.append(field)
     if missing_fields:
         return {'error': f"{', '.join(missing_fields)} must be in the request body"}, 400
-    return 'This is the create task route!' 
 
+    # Get data values
+    title = data.get('title')
+    description = data.get('description')
+    dueDate = data.get('dueDate')
+
+
+    # Create new task dictionary 
+    new_task = {
+        'id' : len(tasks_list) + 1,
+        'title' : title,
+        'description' : description,
+        'dueDate': dueDate, 
+        'completed': bool,
+        'createdAd': '2024-03-29T15:23:11'
+    }
+
+    # Add the new post to storage (new_task)
+    tasks_list.append(new_task)
+
+    # Return the newly created task dictionary with a 201 Created Status Code
+    return tasks_list, 201
